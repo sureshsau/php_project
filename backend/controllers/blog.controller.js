@@ -1,5 +1,5 @@
 import Blog from '../models/blog.model.js';
-
+import User from '../models/user.model.js';
 
 
 export const createBlogController = async (req, res) => {
@@ -223,3 +223,68 @@ export const editBlogController = async (req, res) => {
 
 
 
+export const getRecommendedBlogsController = async (req, res) => {
+  try {
+    const { blogId } = req.params;
+
+    if (!blogId) {
+      return res.status(400).json({ success: false, message: 'Blog ID is required' });
+    }
+
+    const currentBlog = await Blog.findById(blogId);
+
+    if (!currentBlog) {
+      return res.status(404).json({ success: false, message: 'Blog not found' });
+    }
+
+    const filter = {
+      _id: { $ne: blogId },
+      $or: [
+        { category: currentBlog.category },
+        { tags: { $in: currentBlog.tags } }
+      ]
+    };
+
+    const recommendedBlogs = await Blog.find(filter)
+      .populate('author', 'username')
+      .select('title summary coverImage tags createdAt views likes category')
+      .sort({ views: -1, likes: -1 })
+      .limit(5);
+
+    res.status(200).json({
+      success: true,
+      message: 'Recommended blogs fetched successfully',
+      blogs: recommendedBlogs,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+    });
+  }
+};
+
+export const getWriter = async (req, res) => {
+  try {
+    const allUser = await User.find({ role: "writer" }).select('username profileImage');
+
+    // If no writers are found, return a 404 error with a message
+    if (!allUser || allUser.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'No writers found',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      writers: allUser,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message || 'Something went wrong in the writer controller',
+    });
+  }
+};

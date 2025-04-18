@@ -1,34 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegUser, FaRegFileAlt, FaUserPlus } from "react-icons/fa";
-
-const writers = [
-  {
-    name: "David Wilson",
-    field: "Technology & Innovation",
-    description: "Award-winning tech journalist covering emerging technologies...",
-    posts: 48,
-    followers: "12.4k",
-    img: "https://randomuser.me/api/portraits/men/32.jpg"
-  },
-  {
-    name: "Sophia Lee",
-    field: "Health & Wellness",
-    description: "Certified nutritionist and wellness coach sharing health advice...",
-    posts: 62,
-    followers: "18.7k",
-    img: "https://randomuser.me/api/portraits/women/44.jpg"
-  },
-  {
-    name: "James Morgan",
-    field: "Finance & Investing",
-    description: "Financial analyst with 15+ years of experience helping readers...",
-    posts: 37,
-    followers: "9.2k",
-    img: "https://randomuser.me/api/portraits/men/65.jpg"
-  }
-];
+import axiosInstance from "../../../utils/axiosInstance";
 
 const PopularWriters = () => {
+  const [writers, setWriters] = useState([]); // Store writers data
+  const [loading, setLoading] = useState(true); // Track loading state
+  const [error, setError] = useState(""); // Track error state
+
+  useEffect(() => {
+    getWriters();
+  }, []);
+
+  const getWriters = async () => {
+    try {
+      const { data } = await axiosInstance.get('/blog/writer');
+      console.log('the writer data',data);
+      if (data?.success) {
+        setWriters(data.writers); // Set the writers data
+      } else {
+        
+        setError("Failed to fetch writers");
+      }
+    } catch (err) {
+      console.log(err)
+      setError("Error fetching writers");
+    } finally {
+      setLoading(false); 
+    }
+  };
+
+  if (loading) {
+    return <div>Loading writers...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
     <div className="mb-10">
       <div className="flex justify-between items-center mb-4">

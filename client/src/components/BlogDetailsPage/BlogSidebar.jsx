@@ -3,6 +3,7 @@ import axiosInstance from "../../utils/axiosInstance";
 
 const BlogSidebar = ({ blog }) => {
   const [authorBlogs, setAuthorBlogs] = useState([]);
+  const [recommendedBlogs, setRecommendedBlogs] = useState([]);
 
   useEffect(() => {
     const fetchAuthorBlogs = async () => {
@@ -22,13 +23,26 @@ const BlogSidebar = ({ blog }) => {
       }
     };
 
-    if (blog?.author?._id) {
+    const fetchRecommendedBlogs = async () => {
+      try {
+        const { data } = await axiosInstance.get(`/blog/recommended/${blog._id}`);
+        if (data.success) {
+          setRecommendedBlogs(data.blogs);
+        }
+      } catch (error) {
+        console.error("Error fetching recommended blogs:", error);
+      }
+    };
+
+    if (blog?.author?._id && blog?._id) {
       fetchAuthorBlogs();
+      fetchRecommendedBlogs();
     }
   }, [blog]);
 
   return (
     <div className="space-y-6">
+      {/* Stats */}
       <div className="bg-white rounded-xl shadow p-4">
         <h3 className="text-lg font-semibold mb-2">Article Stats</h3>
         <ul className="text-sm text-gray-700 space-y-1">
@@ -40,6 +54,7 @@ const BlogSidebar = ({ blog }) => {
         </ul>
       </div>
 
+      {/* More from author */}
       <div className="bg-white rounded-xl shadow p-4">
         <h3 className="text-lg font-semibold mb-3">More from {blog.author.username}</h3>
         <ul className="space-y-3">
@@ -54,7 +69,7 @@ const BlogSidebar = ({ blog }) => {
                 <div>
                   <p className="font-medium text-sm">{item.title}</p>
                   <p className="text-xs text-gray-500">
-                    {new Date(item.createdAt).toLocaleDateString()} • {item.readTime}
+                    {new Date(item.createdAt).toLocaleDateString()}
                   </p>
                 </div>
               </div>
@@ -65,6 +80,32 @@ const BlogSidebar = ({ blog }) => {
           View All Articles
         </button>
       </div>
+
+      {/* Recommended blogs */}
+      {recommendedBlogs.length > 0 && (
+        <div className="bg-white rounded-xl shadow p-4">
+          <h3 className="text-lg font-semibold mb-3">Recommended for You</h3>
+          <ul className="space-y-3">
+            {recommendedBlogs.map((item) => (
+              <li key={item._id}>
+                <div className="flex gap-3">
+                  <img
+                    src={item.coverImage || "/placeholder.jpg"}
+                    alt={item.title}
+                    className="w-12 h-12 rounded-md object-cover"
+                  />
+                  <div>
+                    <p className="font-medium text-sm">{item.title}</p>
+                    <p className="text-xs text-gray-500">
+                      {new Date(item.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };

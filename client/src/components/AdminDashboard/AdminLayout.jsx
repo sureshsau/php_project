@@ -14,11 +14,9 @@ import Layout from '../Layout/Layout';
 import { useSelector } from 'react-redux';
 
 const navLinks = [
-  { name: 'Dashboard', path: '/dashboard', icon: <FaTachometerAlt /> },
   { name: 'Explore', path: '/dashboard/explore', icon: <FaCompass /> },
   { name: 'New Post', path: '/dashboard/new-post', icon: <FaPlusCircle /> },
   { name: 'My Posts', path: '/dashboard/my-posts', icon: <FaFileAlt /> },
-  { name: 'Earnings', path: '/dashboard/earnings', icon: <FaDollarSign /> },
   { name: 'Analytics', path: '/dashboard/analytics', icon: <FaChartBar /> },
   { name: 'Settings', path: '/dashboard/settings', icon: <FaCog /> },
 ];

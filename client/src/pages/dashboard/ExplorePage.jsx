@@ -60,7 +60,7 @@ const ExplorePage = () => {
         <>
           <CardList blogs={blogs} />
           <PopularWriters />
-          <Recommended />
+          
         </>
       )}
     </AdminLayout>
