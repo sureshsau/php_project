@@ -4,22 +4,22 @@ import FounderCard from './FounderCard'
 const FounderSection = () => {
   const founders = [
     {
-      name: "alex",
-      role: "Chief Executive Officer",
+      name: "suresh sau",
+      role: "Backend developer",
       phone: "+91-8116908644",
-      image: "https://t4.ftcdn.net/jpg/04/98/10/99/360_F_498109902_Uy3HrvTU7EfliHBPPeLVoY9kp2AQpXWQ.jpg",
+      image: "",
     },
     {
       name: "alex",
       role: "Chief Executive Officer",
       phone: "+91-8116908644",
-      image: "https://assets.fyers.in/images/about-us/tejas_khoday.webp",
+      image: "",
     },
     {
       name: "alex",
       role: "Chief Executive Officer",
       phone: "+91-8116908644",
-      image: "https://plus.unsplash.com/premium_photo-1661521277742-f8756af10deb?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c3RhcnR1cCUyMGZvdW5kZXJ8ZW58MHx8MHx8fDA%3D",
+      image: "",
     },
 
   ];

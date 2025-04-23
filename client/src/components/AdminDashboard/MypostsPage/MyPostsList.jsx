@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import MyPostCard from "./MypostCard";
+import MyPostCard from "./MyPostCard";
 import { useSelector } from "react-redux";
 import axiosInstance from "../../../utils/axiosInstance"
 import { toast } from "react-toastify";

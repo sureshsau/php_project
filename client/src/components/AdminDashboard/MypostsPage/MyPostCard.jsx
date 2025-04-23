@@ -7,12 +7,12 @@ import {
   FaHeart
 } from "react-icons/fa";
 import EarningsBadge from "./EarningBadge";
-import axiosInstance from "../../../utils/axiosInstance"
+import axiosInstance from "../../../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
 
 const MyPostCard = ({ post = {}, onDelete }) => {
   const [isDeleting, setIsDeleting] = useState(false);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const {
     _id,
     title = "Untitled Post",
@@ -34,7 +34,7 @@ const MyPostCard = ({ post = {}, onDelete }) => {
     : "Unknown Date";
 
   const handleEdit = () => {
-    alert(`Editing post: ${title}`);
+    navigate(`/dashboard/blog/edit/${_id}`);
   };
 
   const handleDelete = async () => {
@@ -45,7 +45,7 @@ const MyPostCard = ({ post = {}, onDelete }) => {
 
     try {
       setIsDeleting(true);
-      const {data}=await axiosInstance.delete(`/blog/${_id}`);
+      const { data } = await axiosInstance.delete(`/blog/${_id}`);
       console.log(data);
       if (onDelete) onDelete(_id);
     } catch (err) {
@@ -57,7 +57,6 @@ const MyPostCard = ({ post = {}, onDelete }) => {
 
   return (
     <div className="rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-lg bg-white transition" onClick={() => navigate(`/blog/${_id}`)}>
-
       <img
         src={coverImage}
         alt={title}
@@ -86,13 +85,19 @@ const MyPostCard = ({ post = {}, onDelete }) => {
 
         <div className="flex justify-end gap-3 mt-4">
           <button
-            onClick={handleEdit}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleEdit();
+            }}
             className="text-blue-600 border border-blue-500 px-3 py-1 rounded hover:bg-blue-50 flex items-center gap-1"
           >
             <FaRegEdit /> Edit
           </button>
           <button
-            onClick={handleDelete}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDelete();
+            }}
             disabled={isDeleting}
             className={`text-red-600 border border-red-500 px-3 py-1 rounded flex items-center gap-1 ${
               isDeleting ? "bg-red-100 opacity-70 cursor-not-allowed" : "hover:bg-red-50"

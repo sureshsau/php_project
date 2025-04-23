@@ -2,6 +2,7 @@ import Blog from '../models/blog.model.js';
 import User from '../models/user.model.js';
 
 
+
 export const createBlogController = async (req, res) => {
   try {
     const title = req.body.title;
@@ -267,7 +268,7 @@ export const getRecommendedBlogsController = async (req, res) => {
 
 export const getWriter = async (req, res) => {
   try {
-    const allUser = await User.find({ role: "writer" }).select('username profileImage');
+    const allUser = await User.find({ role: 'writer' }).select('username email profileImage createdAt');
 
     // If no writers are found, return a 404 error with a message
     if (!allUser || allUser.length === 0) {

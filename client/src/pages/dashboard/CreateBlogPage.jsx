@@ -77,7 +77,7 @@ const CreateBlogPage = () => {
       }
     } catch (error) {
       console.error(error);
-      toast.error(error?.response?.data?.message || 'Error creating blog');
+      toast.error(error?.response?.data?.message ||error?.response?.data?.error || 'Error creating blog');
     } finally {
       setLoading(false);
     }

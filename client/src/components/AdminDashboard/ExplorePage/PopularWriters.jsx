@@ -16,7 +16,7 @@ const PopularWriters = () => {
       const { data } = await axiosInstance.get('/blog/writer');
       console.log('the writer data',data);
       if (data?.success) {
-        setWriters(data.writers); // Set the writers data
+        setWriters(data.writers);
       } else {
         
         setError("Failed to fetch writers");
@@ -38,10 +38,10 @@ const PopularWriters = () => {
   }
 
   return (
-    <div className="mb-10">
+    <div className="mb-10 bg-gradient-to-r from-blue-500 to-green-500 p-6 min-h-screen">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold">Popular Writers</h2>
-        <a href="#" className="text-blue-500 hover:underline">View All</a>
+        <h2 className="text-lg font-semibold text-white">Popular Writers</h2>
+        <a href="#" className="text-blue-200 hover:underline">View All</a>
       </div>
       <div className="flex gap-4 overflow-x-auto">
         {writers.map((writer, index) => (

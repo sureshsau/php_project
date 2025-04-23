@@ -1,17 +1,20 @@
 import transporter from '../mail/mail.config.js'
-import { codeVerificationTemplate, welcomeEmailTemplate,resetPasswordEmailTemplate } from './mail.template.js';
-
+import {
+    codeVerificationTemplate,
+    welcomeEmailTemplate,
+    resetPasswordEmailTemplate
+} from './mail.template.js';
 
 export const sendVerificationCode = async (email, code) => {
     try {
         const info = await transporter.sendMail({
-            from: `"Entirety Trading" <${process.env.EMAIL_ADDRESS}>`, 
+            from: `"Blognest" <${process.env.EMAIL_ADDRESS}>`,
             to: email,
-            subject: "Enterity OTP Verification Code",
-            text: `Your OTP for Enterity Trading verification is: ${code}`,
-            html: codeVerificationTemplate(code), // HTML version
+            subject: "Your Blognest OTP Verification Code",
+            text: `Your OTP for Blognest verification is: ${code}`,
+            html: codeVerificationTemplate(code),
             headers: {
-                "X-Mailer": "EnterityTrading",
+                "X-Mailer": "Blognest",
                 "Precedence": "bulk",
             }
         });
@@ -22,17 +25,17 @@ export const sendVerificationCode = async (email, code) => {
     }
 };
 
-export const sendWelcomeEmail = async (email,username) => {
+export const sendWelcomeEmail = async (email, username) => {
     try {
         const info = await transporter.sendMail({
-            from: `"Entirety Trading" <${process.env.EMAIL_ADDRESS}>`, 
+            from: `"Blognest" <${process.env.EMAIL_ADDRESS}>`,
             to: email,
-            subject: "welcome email from enterity",
-            html:welcomeEmailTemplate(username), // HTML version
+            subject: "Welcome to Blognest!",
+            html: welcomeEmailTemplate(username),
         });
         return true;
     } catch (error) {
-        console.error("Error sending OTP email:", error);
+        console.error("Error sending welcome email:", error);
         return false;
     }
 };
@@ -40,14 +43,16 @@ export const sendWelcomeEmail = async (email,username) => {
 export const sendPasswordResetEmail = async (email, resetLink) => {
     try {
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: `"Blognest" <${process.env.EMAIL_ADDRESS}>`,
             to: email,
-            subject: 'Reset Your Password',
-            html: resetPasswordEmailTemplate(resetLink)  
+            subject: 'Reset Your Blognest Password',
+            html: resetPasswordEmailTemplate(resetLink)
         };
 
         const info = await transporter.sendMail(mailOptions);
+        return true;
     } catch (error) {
-        console.error('Error sending email:', error);
+        console.error('Error sending reset password email:', error);
+        return false;
     }
 };
